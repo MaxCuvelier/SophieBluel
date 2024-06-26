@@ -5,15 +5,19 @@ async function GetWorks() {
     works = await reponse.json()
 }
 
-main()
+main() 
 
 async function main() {
     await GetWorks()
-    creationFilters()
+    if(localStorage.getItem("Token")) {
+        admin()
+    } else {
+        creationFilters()
+    }
     creerProjet()
 }
 /*
-*fonction pour récupérer l'ID maximal des traveaux
+*fonction pour récupérer l'ID maximal des travaux
 */
 function maxCategoryID() {
     let maxID = 0
@@ -34,9 +38,18 @@ function categoryName(id) {
     }
 }
 
+function admin() {
+    const adminbar = document.createElement("div")
+    adminbar.classList.add("adminbar")
+    adminbar.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Mode édition`
+    document.body.insertBefore(adminbar, document.body.firstChild)
+    const MesProjets = document.querySelector(".projetsTitre")
+    MesProjets.innerHTML += `<a href=""><i class="fa-solid fa-pen-to-square"></i> modifier</a>`
+}
+
 /*
 *fonction pour créer les boutons qui servent au filtrage des catégories
-*traveaux
+*travaux
 */
 function creationFilters() {
     let btnFilters = document.querySelector(".btncontainer")
@@ -50,7 +63,7 @@ function creationFilters() {
             document.querySelector(".gallery").innerHTML = ""
             //gallery a été clear
             if (i === 0) {
-                //si pas de filtrer (0=tous) alors on relance la fonction pour creer la page
+                //si pas de filtres (0=tous) alors on relance la fonction pour creer la page
                 creerProjet()
             } else {
                 //sinon on filtre en fonction de l'id
@@ -70,7 +83,7 @@ function creationFilters() {
 }
 
 /*
-*fonction pour filtrer les traveaux, 
+*fonction pour filtrer les travaux, 
 */
 function filtre(categoryid) {
     const gallery = document.querySelector(".gallery")
