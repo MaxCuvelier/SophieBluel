@@ -6,7 +6,7 @@ async function GetWorks() {
 }
 
 main() 
-
+console.log(works)
 async function main() {
     await GetWorks()
     if(localStorage.getItem("Token")) {
@@ -29,15 +29,17 @@ function maxCategoryID() {
 }
 
 /*
- *fonction pour récupérer les noms des catégories
- */
+*fonction pour récupérer les noms des catégories
+*/
 function categoryName(id) {
     for (let i = 0; i < works.length; i++) {
         if (works[i].category.id === id)
             return works[i].category.name
     }
 }
-
+/*
+*fonction pour passer la page en mode admin
+*/
 function admin() {
     const adminbar = document.createElement("div")
     adminbar.classList.add("adminbar")
@@ -81,7 +83,20 @@ function creationFilters() {
         btnFilters.appendChild(btn)
     }
 }
-
+CreationModal()
+async function CreationModal() {
+    await GetWorks()
+    const modal = document.querySelector(".gallery-modal")
+    for (let i = 0; i < works.length; i++) {
+        const work = works[i]
+        const worksModal = document.createElement("figure")
+        const imgModal = document.createElement("img")
+        imgModal.classList.add("img-modal")
+        imgModal.src = work.imageUrl
+        worksModal.appendChild(imgModal)
+        modal.appendChild(worksModal)
+    }   
+}
 /*
 *fonction pour filtrer les travaux, 
 */
