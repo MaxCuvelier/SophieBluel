@@ -10,7 +10,7 @@ console.log(works)
 async function main() {
     await GetWorks()
     if(localStorage.getItem("Token")) {
-        admin()
+        CreationModal()
     } else {
         creationFilters()
     }
@@ -40,13 +40,14 @@ function categoryName(id) {
 /*
 *fonction pour passer la page en mode admin
 */
-function admin() {
+async function admin() {
     const adminbar = document.createElement("div")
     adminbar.classList.add("adminbar")
     adminbar.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Mode édition`
     document.body.insertBefore(adminbar, document.body.firstChild)
     const MesProjets = document.querySelector(".projetsTitre")
     MesProjets.innerHTML += `<a href=""><i class="fa-solid fa-pen-to-square"></i> modifier</a>`
+    MesProjets.classList.add("btn-modal")
 }
 
 /*
@@ -83,20 +84,62 @@ function creationFilters() {
         btnFilters.appendChild(btn)
     }
 }
-CreationModal()
+//CreationModal()
 async function CreationModal() {
     await GetWorks()
+    await admin()
     const modal = document.querySelector(".gallery-modal")
     for (let i = 0; i < works.length; i++) {
         const work = works[i]
         const worksModal = document.createElement("figure")
+        worksModal.classList.add('figure-modal')
         const imgModal = document.createElement("img")
+        const poubelle = document.createElement("span")
+        poubelle.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
+        poubelle.classList.add('poubelle')
         imgModal.classList.add("img-modal")
         imgModal.src = work.imageUrl
         worksModal.appendChild(imgModal)
+        worksModal.appendChild(poubelle)
         modal.appendChild(worksModal)
-    }   
+    }
+    
+    const afficherModal = document.querySelector(".btn-modal")
+    afficherModal.addEventListener('click', (e) => {
+       openModal(e)
+    })
 }
+let modal = null
+
+async function openModal(e) {
+    e.preventDefault()
+    const modalDisplay = document.getElementById("modal1")
+    modalDisplay.classList.remove('display-none')
+    modalDisplay.removeAttribute('aria-hidden')
+    modalDisplay.setAttribute('aria-modal', 'true')
+    modalDisplay.classList.add('modal')
+    modal = modalDisplay
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+}
+
+async function closeModal(e) {
+    if(modal === null) return
+    e.preventDefault()
+    modal.classList.remove('modal')
+    modal.classList.add('display-none')
+    modal.setAttribute('aria-hidden', 'true')
+    modal.removeAttribute('aria-modal')
+    modal.removeEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+    modal = null
+}
+async function stopPropagation(e) {
+    e.stopPropagation()
+}
+
 /*
 *fonction pour filtrer les travaux, 
 */
