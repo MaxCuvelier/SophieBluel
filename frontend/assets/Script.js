@@ -106,6 +106,7 @@ async function CreationModal() {
         worksModal.appendChild(poubelle)
         poubelle.addEventListener('click', function(event) {
             event.stopPropagation()
+            supprimerProjet(work.id)
             console.log(`je vais supprrimer ${work.id}`)
         })
         modal.appendChild(worksModal)
@@ -263,8 +264,16 @@ envoyerProjet.addEventListener('click', async function(event) {
 }
 
 async function supprimerProjet(workid) {
-    fetch('http://localhost:5678/api/works{id}', {
+    const response = await fetch(`http://localhost:5678/api/works/${workid}`, {
         method: 'DELETE',
+        headers: {'Authorization': `Bearer ${token}`}
     })
-    CreationModal()
+    if (response.status === 204) {
+        await GetWorks()
+        creerProjet()
+        CreationModal()
+    }
+    else {
+        alert("Le projet n'a été supprimé")
+    }
 }

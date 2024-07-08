@@ -463,6 +463,13 @@ li:hover {
 			box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
 			margin-bottom: 20px;
 		}
+		select {
+			width: 420px;
+			height: 51px;
+			border: 0;
+			box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+			margin-bottom: 20px;
+		}
 }
 
 .projetsTitre a,
