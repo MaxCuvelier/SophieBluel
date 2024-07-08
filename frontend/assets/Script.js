@@ -5,11 +5,14 @@ async function GetWorks() {
     works = await reponse.json()
 }
 
+const token = localStorage.getItem("Token")
+
 main() 
 console.log(works)
 async function main() {
     await GetWorks()
     if(localStorage.getItem("Token")) {
+        admin()
         CreationModal()
     } else {
         creationFilters()
@@ -87,9 +90,8 @@ function creationFilters() {
 
 //fonction pour creer la liste des travaux sur la modal en cas de connexion en mode admin
 async function CreationModal() {
-    await GetWorks()
-    await admin()
     const modal = document.querySelector(".gallery-modal")
+    modal.innerHTML = ""
     for (let i = 0; i < works.length; i++) {
         const work = works[i]
         const worksModal = document.createElement("figure")
@@ -102,6 +104,10 @@ async function CreationModal() {
         imgModal.src = work.imageUrl
         worksModal.appendChild(imgModal)
         worksModal.appendChild(poubelle)
+        poubelle.addEventListener('click', function(event) {
+            event.stopPropagation()
+            console.log(`je vais supprrimer ${work.id}`)
+        })
         modal.appendChild(worksModal)
     }
     
@@ -116,6 +122,7 @@ let modal = null
 //fonction pour ouvrir la première modal et activer la possibiliter de changer de modal
 async function openModal(e) {
     e.preventDefault()
+    CreationModal()
     const modalDisplay = document.getElementById("modal1")
     modalDisplay.classList.remove('display-none')
     modalDisplay.removeAttribute('aria-hidden')
@@ -175,7 +182,6 @@ async function retourModal(e) {
 //fonciton pour fermer la modal en cours
 async function closeModal(e) {
     if(modal === null) return
-    e.preventDefault()
     modal.classList.remove('modal')
     modal.classList.add('display-none')
     modal.setAttribute('aria-hidden', 'true')
@@ -213,6 +219,7 @@ function filtre(categoryid) {
 //fonction pour créer la liste des projets depuis l'API
 function creerProjet() {
     const gallery = document.querySelector(".gallery")
+    gallery.innerHTML = ""
     for (let i = 0; i < works.length; i++) {
         const work = works[i]
         const worksElement = document.createElement("figure")
@@ -233,16 +240,19 @@ envoyerProjet.addEventListener('click', async function(event) {
     console.log("faozeubf")
     event.preventDefault()
     const titreProjet = document.getElementById('titre').value
-    const imgProjet = document.getElementById('upload').value
+    const imgProjet = document.getElementById('upload')
     const categorieProjet = document.getElementById('categorie').value
+    const contenueProjet = new FormData()
+    contenueProjet.append('title', titreProjet)
+    contenueProjet.append('category', categorieProjet)
+    contenueProjet.append('image', imgProjet.files[0])
     const response = await fetch('http://localhost:5678/api/works', {
         method: "POST",
-        body: JSON.stringify({
-            titreProjet, imgProjet, categorieProjet
-        }),
-        headers: {"Content-Type": "application/json"}
+        body: contenueProjet,
+        headers: {'Authorization': `Bearer ${token}`}
     })
     if (response.status === 201) {
+        await GetWorks()
         creerProjet()
         closeModal()
     }
@@ -250,4 +260,11 @@ envoyerProjet.addEventListener('click', async function(event) {
         alert("Une erreur est survenue")
     }
 })
+}
+
+async function supprimerProjet(workid) {
+    fetch('http://localhost:5678/api/works{id}', {
+        method: 'DELETE',
+    })
+    CreationModal()
 }
