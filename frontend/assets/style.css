@@ -271,10 +271,23 @@ li:hover {
 .modal-wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 60px;
+	gap: 45px;
 	overflow: auto;
 	width: 630px;
 	height: 688px;
+	max-width: calc(100vw - 20px);
+	max-height: calc(100vh - 20px);
+	background-color: white;
+	border-radius: 10px;
+}
+
+.modal-wrapper2 {
+	display: flex;
+	flex-direction: column;
+	gap: 60px;
+	overflow: auto;
+	width: 630px;
+	height: 670px;
 	max-width: calc(100vw - 20px);
 	max-height: calc(100vh - 20px);
 	background-color: white;
@@ -290,6 +303,15 @@ li:hover {
 	font-size: x-large;
 }
 
+.modal-wrapper2 .fa-xmark {
+	position: relative;
+	margin-left: auto;
+	width: fit-content;
+	top: 20px;
+	right: 20px;
+	font-size: x-large;
+}
+
 .modal-wrapper h3 {
 	font-family: 'work Sans';
 	font-size: 26px;
@@ -297,6 +319,15 @@ li:hover {
 	line-height: 30.5px;
 	text-align: center;
 	margin-top: -25px;
+}
+
+.modal-wrapper hr {
+	border-top: 1px solid grey;
+	width: 420px;
+}
+.modal-wrapper2 hr {
+	border-top: 1px solid grey;
+	width: 420px;
 }
 
 .gallery-modal {
@@ -339,9 +370,99 @@ li:hover {
 	color: white;
 	background-color: #1D6154;
 	margin: 2em auto;
+	margin-top: 0;
 	width: 237px;
 	text-align: center;
 	border-radius: 60px;
+}
+
+.icons-modal {
+	display: flex;
+	justify-content: space-between;
+}
+
+.modal-wrapper2 .fa-arrow-left {
+	position: relative;
+	margin-left: auto;
+	width: fit-content;
+	margin-left: 50px;
+	top: 20px;
+	right: 20px;
+	font-size: x-large;
+}
+
+.contenu-modal2 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 20px;
+}
+
+.input-photo {
+	width: 420px;
+	height: 169px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: rgba(232, 241, 246, 1);
+	border: 0;
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.input-photo .fa-image {
+	color: rgba(203, 214, 220, 1);
+	font-size: 76px;
+}
+
+.input-photo .button {
+	font-family: 'work Sans';
+	font-weight: 700;
+	line-height: 19.2px;
+	border: 1px solid rgba(203, 214, 220, 1);
+	background: rgba(203, 214, 220, 1);
+	color: rgba(48, 102, 133, 1);
+	padding: 9px 10px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 60px;
+	margin: 5px;
+	width: 173px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 16.42px;
+}
+
+.input-photo p {
+	font-family: 'work Sans';
+	font-weight: 400;
+	font-size: 10px;
+	line-height: 11.73px;
+}
+
+.input-photo p, button {
+	z-index: 0;
+}
+.input-photo input {
+	z-index: 1;
+	opacity: 0;
+}
+
+.infos-modal2 {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 7px;
+		input {
+			width: 420px;
+			height: 51px;
+			border: 0;
+			box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+			margin-bottom: 20px;
+		}
 }
 
 .projetsTitre a,

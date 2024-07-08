@@ -84,7 +84,8 @@ function creationFilters() {
         btnFilters.appendChild(btn)
     }
 }
-//CreationModal()
+
+//fonction pour creer la liste des travaux sur la modal en cas de connexion en mode admin
 async function CreationModal() {
     await GetWorks()
     await admin()
@@ -109,8 +110,10 @@ async function CreationModal() {
        openModal(e)
     })
 }
+
 let modal = null
 
+//fonction pour ouvrir la première modal et activer la possibiliter de changer de modal
 async function openModal(e) {
     e.preventDefault()
     const modalDisplay = document.getElementById("modal1")
@@ -122,8 +125,54 @@ async function openModal(e) {
     modal.addEventListener('click', closeModal)
     modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
     modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+    const btnAjouterPhoto = document.querySelector(".btn-ajouter-photo")
+    btnAjouterPhoto.addEventListener('click', () => {
+        changerModal(e)
+    })
 }
 
+//fonciton pour changer de modal
+async function changerModal(e) {
+    e.preventDefault()
+    const modalDisplay = document.getElementById("modal1")
+    const modal2 = document.getElementById("modal2")
+    const modalRetour = document.querySelector(".js-modal-retour")
+        modalDisplay.classList.remove('modal')
+        modalDisplay.setAttribute('aria-hidden', 'true')
+        modalDisplay.removeAttribute('aria-modal', 'true')
+        modalDisplay.classList.add('display-none')
+        modal2.classList.remove('display-none')
+        modal2.removeAttribute('aria-hidden')
+        modal2.setAttribute('aria-modal', 'true')
+        modal2.classList.add('modal')
+        modal = modal2
+        modal.addEventListener('click', closeModal)
+        modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+        modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+        modalRetour.addEventListener('click', () => {
+            retourModal(e)
+        })
+        ajoutProjet()
+}
+
+//fonction pour retourner à la première modal
+async function retourModal(e) {
+    e.preventDefault()
+    const modalDisplay = document.getElementById("modal1")
+    const modal2 = document.getElementById("modal2")
+        modal2.classList.add('display-none')
+        modal2.setAttribute('aria-hidden', 'true')
+        modal2.removeAttribute('aria-modal', 'true')
+        modal2.classList.remove('modal')
+        modalDisplay.classList.remove('display-none')
+        modalDisplay.removeAttribute('aria-hidden')
+        modalDisplay.setAttribute('aria-modal', 'true')
+        modalDisplay.classList.add('modal')
+        modal = modalDisplay
+}
+
+
+//fonciton pour fermer la modal en cours
 async function closeModal(e) {
     if(modal === null) return
     e.preventDefault()
@@ -175,4 +224,30 @@ function creerProjet() {
         worksElement.appendChild(titreElement)
         gallery.appendChild(worksElement)
     }
+}
+
+//fonction pour ajouter un projet sur l'API
+async function ajoutProjet() {
+const envoyerProjet = document.getElementById('envoyer-projet')
+envoyerProjet.addEventListener('click', async function(event) {
+    console.log("faozeubf")
+    event.preventDefault()
+    const titreProjet = document.getElementById('titre').value
+    const imgProjet = document.getElementById('upload').value
+    const categorieProjet = document.getElementById('categorie').value
+    const response = await fetch('http://localhost:5678/api/works', {
+        method: "POST",
+        body: JSON.stringify({
+            titreProjet, imgProjet, categorieProjet
+        }),
+        headers: {"Content-Type": "application/json"}
+    })
+    if (response.status === 201) {
+        creerProjet()
+        closeModal()
+    }
+    else {
+        alert("Une erreur est survenue")
+    }
+})
 }

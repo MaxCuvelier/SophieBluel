@@ -53,8 +53,33 @@
 						<div class="gallery-modal">
 
 						</div>
+						<hr>
 						<button class="btn-ajouter-photo">Ajouter une photo</button>
 					</div>
+				</aside>
+				<aside id="modal2" class="display-none" aria-hidden="true">
+					<div class="modal-wrapper2  js-modal-stop">
+						<div class="icons-modal">
+							<i class="fa-solid fa-arrow-left js-modal-retour"></i>
+							<i class="fa-solid fa-xmark js-modal-close"></i>
+						</div>
+						<div class="contenu-modal2">
+							<h3>Ajout photo</h3>
+								<button class="input-photo">
+									<i class="fa-regular fa-image"></i>
+									<label class="button" for="upload">+ Ajouter photo</label>
+									<input id="upload" type="file">
+									<p>jpg.png : 4mo max</p>
+								</button>	
+							<div class="infos-modal2">
+									<label for="titre">Titre</label>
+									<input id="titre" type="text" name="titre">
+									<label for="catégorie">Catégorie</label>
+									<input id="categorie" type="text" name="catégorie">
+							</div>
+							<hr>
+							<button id="envoyer-projet" class="btn-ajouter-photo">Valider</button>
+						</div>
 				</aside>
 				<div class="btncontainer"></div>
 				<div class="gallery">
