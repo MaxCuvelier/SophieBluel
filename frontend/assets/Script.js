@@ -7,13 +7,14 @@ async function GetWorks() {
 
 const token = localStorage.getItem("Token")
 
-main() 
+main()
 console.log(works)
 async function main() {
     await GetWorks()
-    if(localStorage.getItem("Token")) {
+    if (localStorage.getItem("Token")) {
         admin()
         CreationModal()
+        ajoutProjet()
     } else {
         creationFilters()
     }
@@ -75,7 +76,7 @@ function creationFilters() {
                 //sinon on filtre en fonction de l'id
                 filtre(i)
             }
-            
+
             //on met à jour l'état des boutons en changeant la class en "selected"
             document.querySelector(".btnselected").classList.remove("btnselected")
             this.classList.add("btnselected")
@@ -104,17 +105,17 @@ async function CreationModal() {
         imgModal.src = work.imageUrl
         worksModal.appendChild(imgModal)
         worksModal.appendChild(poubelle)
-        poubelle.addEventListener('click', function(event) {
+        poubelle.addEventListener('click', function (event) {
             event.stopPropagation()
             supprimerProjet(work.id)
             console.log(`je vais supprrimer ${work.id}`)
         })
         modal.appendChild(worksModal)
     }
-    
+
     const afficherModal = document.querySelector(".btn-modal")
     afficherModal.addEventListener('click', (e) => {
-       openModal(e)
+        openModal(e)
     })
 }
 
@@ -145,22 +146,21 @@ async function changerModal(e) {
     const modalDisplay = document.getElementById("modal1")
     const modal2 = document.getElementById("modal2")
     const modalRetour = document.querySelector(".js-modal-retour")
-        modalDisplay.classList.remove('modal')
-        modalDisplay.setAttribute('aria-hidden', 'true')
-        modalDisplay.removeAttribute('aria-modal', 'true')
-        modalDisplay.classList.add('display-none')
-        modal2.classList.remove('display-none')
-        modal2.removeAttribute('aria-hidden')
-        modal2.setAttribute('aria-modal', 'true')
-        modal2.classList.add('modal')
-        modal = modal2
-        modal.addEventListener('click', closeModal)
-        modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
-        modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
-        modalRetour.addEventListener('click', () => {
-            retourModal(e)
-        })
-        ajoutProjet()
+    modalDisplay.classList.remove('modal')
+    modalDisplay.setAttribute('aria-hidden', 'true')
+    modalDisplay.removeAttribute('aria-modal', 'true')
+    modalDisplay.classList.add('display-none')
+    modal2.classList.remove('display-none')
+    modal2.removeAttribute('aria-hidden')
+    modal2.setAttribute('aria-modal', 'true')
+    modal2.classList.add('modal')
+    modal = modal2
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+    modalRetour.addEventListener('click', () => {
+        retourModal(e)
+    })
 }
 
 //fonction pour retourner à la première modal
@@ -168,21 +168,21 @@ async function retourModal(e) {
     e.preventDefault()
     const modalDisplay = document.getElementById("modal1")
     const modal2 = document.getElementById("modal2")
-        modal2.classList.add('display-none')
-        modal2.setAttribute('aria-hidden', 'true')
-        modal2.removeAttribute('aria-modal', 'true')
-        modal2.classList.remove('modal')
-        modalDisplay.classList.remove('display-none')
-        modalDisplay.removeAttribute('aria-hidden')
-        modalDisplay.setAttribute('aria-modal', 'true')
-        modalDisplay.classList.add('modal')
-        modal = modalDisplay
+    modal2.classList.add('display-none')
+    modal2.setAttribute('aria-hidden', 'true')
+    modal2.removeAttribute('aria-modal', 'true')
+    modal2.classList.remove('modal')
+    modalDisplay.classList.remove('display-none')
+    modalDisplay.removeAttribute('aria-hidden')
+    modalDisplay.setAttribute('aria-modal', 'true')
+    modalDisplay.classList.add('modal')
+    modal = modalDisplay
 }
 
 
 //fonciton pour fermer la modal en cours
 async function closeModal(e) {
-    if(modal === null) return
+    if (modal === null) return
     modal.classList.remove('modal')
     modal.classList.add('display-none')
     modal.setAttribute('aria-hidden', 'true')
@@ -191,6 +191,7 @@ async function closeModal(e) {
     modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
     modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
     modal = null
+    clear()
 }
 async function stopPropagation(e) {
     e.stopPropagation()
@@ -216,6 +217,40 @@ function filtre(categoryid) {
     }
 }
 
+function onFileSelected(event) {
+    let selectedFile = event.target.files[0];
+    let reader = new FileReader();
+
+    let imgtag = document.getElementById("myimage");
+    imgtag.title = selectedFile.name;
+    let contenueBouton = document.querySelector(".input-photo")
+
+    reader.onload = function (event) {
+        imgtag.src = event.target.result;
+        contenueBouton.querySelector("i").classList.add("display-none")
+        contenueBouton.querySelector("label").classList.add("display-none")
+        contenueBouton.querySelector("input").classList.add("display-none")
+        contenueBouton.querySelector("p").classList.add("display-none")
+        imgtag.classList.remove("display-none")
+    };
+
+    reader.readAsDataURL(selectedFile);
+}
+
+function clear() {
+    let imgtag = document.getElementById("myimage");
+    let contenueBouton = document.querySelector(".input-photo")
+    contenueBouton.querySelector("i").classList.remove("display-none")
+    contenueBouton.querySelector("label").classList.remove("display-none")
+    contenueBouton.querySelector("input").classList.remove("display-none")
+    contenueBouton.querySelector("p").classList.remove("display-none")
+    imgtag.classList.add("display-none")
+    document.getElementById('titre').value = ""
+    document.getElementById('upload').value = ""
+    document.getElementById('categorie').value = ""
+
+}
+
 
 //fonction pour créer la liste des projets depuis l'API
 function creerProjet() {
@@ -236,37 +271,38 @@ function creerProjet() {
 
 //fonction pour ajouter un projet sur l'API
 async function ajoutProjet() {
-const envoyerProjet = document.getElementById('envoyer-projet')
-envoyerProjet.addEventListener('click', async function(event) {
-    console.log("faozeubf")
-    event.preventDefault()
-    const titreProjet = document.getElementById('titre').value
-    const imgProjet = document.getElementById('upload')
-    const categorieProjet = document.getElementById('categorie').value
-    const contenueProjet = new FormData()
-    contenueProjet.append('title', titreProjet)
-    contenueProjet.append('category', categorieProjet)
-    contenueProjet.append('image', imgProjet.files[0])
-    const response = await fetch('http://localhost:5678/api/works', {
-        method: "POST",
-        body: contenueProjet,
-        headers: {'Authorization': `Bearer ${token}`}
+    const envoyerProjet = document.getElementById('envoyer-projet')
+    envoyerProjet.addEventListener('click', async function (event) {
+        event.preventDefault()
+        console.log("test")
+        const titreProjet = document.getElementById('titre').value
+        const imgProjet = document.getElementById('upload')
+        const categorieProjet = document.getElementById('categorie').value
+        const contenueProjet = new FormData()
+        contenueProjet.append('title', titreProjet)
+        contenueProjet.append('category', categorieProjet)
+        contenueProjet.append('image', imgProjet.files[0])
+        const response = await fetch('http://localhost:5678/api/works', {
+            method: "POST",
+            body: contenueProjet,
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        if (response.status === 201) {
+            await GetWorks()
+            creerProjet()
+            closeModal()
+            clear()
+        }
+        else {
+            alert("Une erreur est survenue")
+        }
     })
-    if (response.status === 201) {
-        await GetWorks()
-        creerProjet()
-        closeModal()
-    }
-    else {
-        alert("Une erreur est survenue")
-    }
-})
 }
 
 async function supprimerProjet(workid) {
     const response = await fetch(`http://localhost:5678/api/works/${workid}`, {
         method: 'DELETE',
-        headers: {'Authorization': `Bearer ${token}`}
+        headers: { 'Authorization': `Bearer ${token}` }
     })
     if (response.status === 204) {
         await GetWorks()

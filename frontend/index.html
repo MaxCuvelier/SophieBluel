@@ -68,9 +68,10 @@
 								<button class="input-photo">
 									<i class="fa-regular fa-image"></i>
 									<label class="button" for="upload">+ Ajouter photo</label>
-									<input id="upload" type="file">
+									<input id="upload" type="file" onchange="onFileSelected(event)">
+									<img src="#" id="myimage" class="display-none">
 									<p>jpg.png : 4mo max</p>
-								</button>	
+								</button>
 							<div class="infos-modal2">
 									<label for="titre">Titre</label>
 									<input id="titre" type="text" name="titre">
