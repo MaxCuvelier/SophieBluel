@@ -23,7 +23,7 @@
 				<ul>
 					<li><a href="index.html">projets</a></li>
 					<li>contact</li>
-					<li><a href="login.html">login</a></li>
+					<li><a href="login.html" class="btn-login">login</a></li>
 					<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 				</ul>
 			</nav>
@@ -69,10 +69,11 @@
 									<i class="fa-regular fa-image"></i>
 									<label class="button" for="upload">+ Ajouter photo</label>
 									<input id="upload" type="file" onchange="onFileSelected(event)">
-									<img src="#" id="myimage" class="display-none">
+									<img src="#" id="myimage" class="display-none" alt="">
 									<p>jpg.png : 4mo max</p>
 								</button>
 							<div class="infos-modal2">
+								<form action="submit" method="post" id="envoyer-projet">
 									<label for="titre">Titre</label>
 									<input id="titre" type="text" name="titre">
 									<label for="catégorie">Catégorie</label>
@@ -83,8 +84,10 @@
 										<option value="3">Hotels & resataurants</option>
 									</select>
 							</div>
+						
 							<hr>
-							<button id="envoyer-projet" class="btn-ajouter-photo">Valider</button>
+							<button type="submit" class="btn-ajouter-photo">Valider</button>
+						</form>
 						</div>
 				</aside>
 				<div class="btncontainer"></div>

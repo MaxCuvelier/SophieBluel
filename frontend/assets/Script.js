@@ -52,7 +52,19 @@ async function admin() {
     const MesProjets = document.querySelector(".projetsTitre")
     MesProjets.innerHTML += `<a href=""><i class="fa-solid fa-pen-to-square"></i> modifier</a>`
     MesProjets.classList.add("btn-modal")
+    const btnLogout = document.querySelector(".btn-login")
+    btnLogout.innerHTML = "logout"
+    btnLogout.href = "index.html"
+    btnLogout.addEventListener("click", () => {
+        Logout()
+    })
 }
+
+function Logout() {
+    localStorage.removeItem("Token")
+    main()
+}
+
 
 /*
 *fonction pour créer les boutons qui servent au filtrage des catégories
@@ -248,7 +260,6 @@ function clear() {
     document.getElementById('titre').value = ""
     document.getElementById('upload').value = ""
     document.getElementById('categorie').value = ""
-
 }
 
 
@@ -272,9 +283,8 @@ function creerProjet() {
 //fonction pour ajouter un projet sur l'API
 async function ajoutProjet() {
     const envoyerProjet = document.getElementById('envoyer-projet')
-    envoyerProjet.addEventListener('click', async function (event) {
+    envoyerProjet.addEventListener('submit', async function (event) {
         event.preventDefault()
-        console.log("test")
         const titreProjet = document.getElementById('titre').value
         const imgProjet = document.getElementById('upload')
         const categorieProjet = document.getElementById('categorie').value
@@ -282,6 +292,7 @@ async function ajoutProjet() {
         contenueProjet.append('title', titreProjet)
         contenueProjet.append('category', categorieProjet)
         contenueProjet.append('image', imgProjet.files[0])
+        console.log(contenueProjet)
         const response = await fetch('http://localhost:5678/api/works', {
             method: "POST",
             body: contenueProjet,

@@ -457,7 +457,7 @@ li:hover {
 	opacity: 0;
 }
 
-.infos-modal2 {
+.infos-modal2 form {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
